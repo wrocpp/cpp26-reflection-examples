@@ -1,0 +1,9 @@
+number: 12
+slug: clap-for-cpp
+title: "CLI parsing: struct to typed command-line parser"
+audience: working-cpp
+status: planned
+tags: []
+prerequisites: []
+discussion_url: null
+published_at: null

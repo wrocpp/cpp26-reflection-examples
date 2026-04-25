@@ -1,0 +1,9 @@
+number: 05
+slug: enum-to-string
+title: "Goodbye magic_enum: enum reflection done right"
+audience: working-cpp
+status: planned
+tags: []
+prerequisites: []
+discussion_url: null
+published_at: null

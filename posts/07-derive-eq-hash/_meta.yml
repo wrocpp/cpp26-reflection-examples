@@ -1,0 +1,9 @@
+number: 07
+slug: derive-eq-hash
+title: "Deriving equality, hashing, and ordering from structure"
+audience: working-cpp
+status: planned
+tags: []
+prerequisites: []
+discussion_url: null
+published_at: null

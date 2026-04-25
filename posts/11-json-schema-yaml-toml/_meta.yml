@@ -1,0 +1,10 @@
+number: 11
+slug: json-schema-yaml-toml
+title: "One codegen, many wire formats"
+audience: working-cpp
+status: drafting
+tags: [serialization, format-policy, yaml, xml, toml, msgpack]
+prerequisites: [02, 04, 08, 09]
+reading_time_minutes: 15
+discussion_url: null
+published_at: null

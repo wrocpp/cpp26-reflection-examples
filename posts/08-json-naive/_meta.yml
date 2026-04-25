@@ -1,0 +1,9 @@
+number: 08
+slug: json-naive
+title: "A 40-line JSON serializer with reflection"
+audience: working-cpp
+status: planned
+tags: []
+prerequisites: []
+discussion_url: null
+published_at: null

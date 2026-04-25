@@ -1,0 +1,9 @@
+number: 06
+slug: auto-formatter
+title: "Auto-generating std::formatter<T> for any aggregate"
+audience: working-cpp
+status: planned
+tags: []
+prerequisites: []
+discussion_url: null
+published_at: null

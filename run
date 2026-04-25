@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Run a binary (or any command) inside the clang-p2996 container.
+# Usage: ./run ./hello_reflection
+set -euo pipefail
+
+docker run --rm \
+    -v "$(pwd):/work" \
+    -w /work \
+    clang-p2996:latest \
+    "$@"

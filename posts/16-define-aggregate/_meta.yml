@@ -1,0 +1,9 @@
+number: 16
+slug: define-aggregate
+title: "define_aggregate: synthesizing types at compile time"
+audience: working-cpp
+status: planned
+tags: []
+prerequisites: []
+discussion_url: null
+published_at: null

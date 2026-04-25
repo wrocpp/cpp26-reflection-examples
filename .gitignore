@@ -1,0 +1,10 @@
+build.log
+hello_reflection
+.verify-scratch/
+.claude/
+
+# Compiled example binaries — keep sources, ignore builds.
+posts/*/examples/*
+!posts/*/examples/*.cpp
+!posts/*/examples/*.md
+!posts/*/examples/*.yml
