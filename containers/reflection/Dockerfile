@@ -10,7 +10,11 @@
 # unmaintained, we'd switch to a self-built source layer (see the
 # top-level Dockerfile in this repo for the source recipe).
 
-FROM vsavkov/clang-p2996:latest
+# vsavkov ships per-arch tags (amd64, arm64), not a multi-arch manifest.
+# TARGETARCH is auto-set by buildx during multi-arch builds (amd64 or
+# arm64), so this Dockerfile builds for both platforms.
+ARG TARGETARCH
+FROM vsavkov/clang-p2996:${TARGETARCH}
 
 ENV DEBIAN_FRONTEND=noninteractive
 

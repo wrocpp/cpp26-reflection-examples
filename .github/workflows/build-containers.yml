@@ -164,12 +164,10 @@ jobs:
         with:
           context: containers/reflection
           push: true
-          # vsavkov/clang-p2996 is amd64-only as of 2026-05, so we
-          # cannot build cpp-reflection multi-arch yet. Reader on
-          # arm64 macOS pulls amd64 image and runs via Rosetta /
-          # binfmt_misc. Once vsavkov ships arm64 (or we self-build),
-          # add linux/arm64 here.
-          platforms: linux/amd64
+          # vsavkov/clang-p2996 ships per-arch tags (amd64, arm64);
+          # the Dockerfile uses TARGETARCH (auto-set by buildx) to
+          # pick the right one per platform. Multi-arch manifest emerges.
+          platforms: linux/amd64,linux/arm64
           tags: |
             ${{ env.REGISTRY }}/${{ env.ORG }}/cpp-reflection:${{ steps.meta.outputs.tag }}
             ${{ env.REGISTRY }}/${{ env.ORG }}/cpp-reflection:sha-${{ github.sha }}

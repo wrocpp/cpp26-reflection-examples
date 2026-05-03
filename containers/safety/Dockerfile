@@ -11,7 +11,6 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         afl++ \
-        afl++-clang \
         libstdc++-13-dev \
         valgrind \
     && rm -rf /var/lib/apt/lists/*
