@@ -4,6 +4,7 @@
 // Run:     ./run posts/04-expansion-statements/examples/dump
 
 #include <experimental/meta>
+#include <format>
 #include <print>
 #include <string>
 
@@ -23,11 +24,18 @@ void dump(T const& obj) {
 struct Point { int x; int y; };
 struct Line  { Point a; Point b; std::string name; };
 
-int main() {
-    dump(Point{3, 4});
-    // template for over a tuple of constexpr-friendly values.
-    // (std::string inside a tuple isn't a structural NTTP type; use array-like data instead.)
-    template for (constexpr auto x : std::tuple{1, 2.5, 'c'}) {
-        std::println("tuple element: {}", x);
+// Tiny {fmt} adapter so the nested Point member prints inside the
+// template-for body. Without this, "  {} = {}" cannot format a Point
+// directly. With it, every member of Line gets a clean rendering and
+// the post-text output matches the actual program output.
+template <>
+struct std::formatter<Point> {
+    constexpr auto parse(auto& ctx) { return ctx.begin(); }
+    auto format(Point const& p, auto& ctx) const {
+        return std::format_to(ctx.out(), "Point{{x={}, y={}}}", p.x, p.y);
     }
+};
+
+int main() {
+    dump(Line{{0,0}, {3,4}, "diag"});
 }
