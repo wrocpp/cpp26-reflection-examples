@@ -1,0 +1,20 @@
+# clang-tidy preset for the wro.cpp compliance cluster's MISRA C++ demos.
+# Enables the closest open-source clang-tidy checks that map onto
+# MISRA C++ rules. Not a substitute for a qualified MISRA tool;
+# documents intent + provides reproducible CI starter.
+Checks: >
+  -*,
+  bugprone-*,
+  cert-*,
+  cppcoreguidelines-*,
+  hicpp-*,
+  misc-*,
+  modernize-avoid-c-arrays,
+  modernize-avoid-bind,
+  modernize-deprecated-headers,
+  performance-*,
+  readability-*
+
+WarningsAsErrors: ''
+HeaderFilterRegex: '.*'
+FormatStyle: file
