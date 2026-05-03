@@ -20,8 +20,9 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y --no-install-recommends \
         ca-certificates \
         clang-19 \
-        clang++-19 \
         clang-tools-19 \
+        clang-tidy-19 \
+        clang-format-19 \
         lld-19 \
         libc++-19-dev \
         libc++abi-19-dev \
@@ -34,7 +35,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         python3 \
         python3-pip \
         curl \
-        ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
 # Symlink versioned clang to bare names so user examples just work.
