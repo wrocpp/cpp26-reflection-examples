@@ -57,6 +57,9 @@ jobs:
             echo "tag=branch-${sanitized}" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -67,11 +70,12 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build + push cpp-base
+      - name: Build + push cpp-base (multi-arch)
         uses: docker/build-push-action@v5
         with:
           context: containers/base
           push: true
+          platforms: linux/amd64,linux/arm64
           tags: |
             ${{ env.REGISTRY }}/${{ env.ORG }}/cpp-base:${{ steps.meta.outputs.tag }}
             ${{ env.REGISTRY }}/${{ env.ORG }}/cpp-base:sha-${{ github.sha }}
