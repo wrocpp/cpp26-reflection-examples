@@ -1,0 +1,14 @@
+# clang-tidy preset for the wro.cpp compliance cluster's
+# SEI CERT C++ demos. The cert-* checks are clang-tidy's first-party
+# implementation of CERT C / C++ secure coding rules.
+Checks: >
+  -*,
+  cert-*,
+  bugprone-undefined-memory-manipulation,
+  bugprone-use-after-move,
+  cppcoreguidelines-no-malloc,
+  cppcoreguidelines-owning-memory
+
+WarningsAsErrors: 'cert-*'
+HeaderFilterRegex: '.*'
+FormatStyle: file
