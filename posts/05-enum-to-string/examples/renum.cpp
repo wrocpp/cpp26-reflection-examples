@@ -45,6 +45,27 @@ constexpr std::string to_flags_string(E value) {
     return out.empty() ? "0" : out;
 }
 
+// Inverse of to_flags_string. Splits on '|' and OR-combines each
+// matched flag's underlying value. Returns nullopt if any token does
+// not name a declared enumerator -- protects against typos at the
+// trust boundary (config files, CLI args, network input).
+template <typename E>
+constexpr std::optional<E> from_flags_string(std::string_view s) {
+    using U = std::underlying_type_t<E>;
+    if (s.empty()) return std::nullopt;
+    U combined{};
+    while (true) {
+        auto pipe = s.find('|');
+        auto token = s.substr(0, pipe);
+        auto match = from_string<E>(token);
+        if (!match) return std::nullopt;
+        combined |= static_cast<U>(*match);
+        if (pipe == std::string_view::npos) break;
+        s = s.substr(pipe + 1);
+    }
+    return E{combined};
+}
+
 }  // namespace renum
 
 enum class Color { red, green, blue };
@@ -59,4 +80,14 @@ int main() {
     auto p = static_cast<Permission>(
         static_cast<unsigned>(Permission::read) | static_cast<unsigned>(Permission::exec));
     std::println("{}", renum::to_flags_string(p));
+
+    // Round-trip: string -> flags -> string.
+    auto parsed = renum::from_flags_string<Permission>("read|write");
+    std::println("parsed read|write -> {}",
+                 parsed ? renum::to_flags_string(*parsed) : std::string{"<error>"});
+
+    // Trust-boundary safety: typo rejected, no surprise zero or partial mask.
+    auto bad = renum::from_flags_string<Permission>("read|writ");
+    std::println("typo 'writ' -> {}",
+                 bad ? renum::to_flags_string(*bad) : std::string{"nullopt"});
 }
