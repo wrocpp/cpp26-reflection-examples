@@ -47,13 +47,29 @@ constexpr std::string to_flags_string(E value) {
     return out.empty() ? "0" : out;
 }
 
-// Inverse of to_flags_string. Tokenise on '|' via std::views::split,
-// look up each token via from_string, OR-combine via std::ranges::
-// fold_left (C++23) over std::optional<U> with monadic .and_then /
-// .transform doing the fail-closed propagation. Returns nullopt if
-// the input is empty or any token does not name a declared enumerator
-// -- protects against typos at the trust boundary (config files, CLI
-// args, network input).
+// Inverse of to_flags_string. Tokenise on '|', look up each token via
+// from_string, OR-combine into the underlying type. Returns nullopt
+// on empty input or any unknown token -- fail-closed for the trust
+// boundary (config files, CLI args, network input).
+//
+// What we want, written imperatively (kept here to make the ranges
+// chain below readable -- the two are equivalent):
+//
+//   if (s.empty()) return std::nullopt;
+//   U combined{};
+//   for (auto part : std::views::split(s, '|')) {
+//       std::string_view token(part.begin(), part.end());
+//       auto match = from_string<E>(token);
+//       if (!match) return std::nullopt;     // typo -> fail closed
+//       combined |= static_cast<U>(*match);
+//   }
+//   return E{combined};
+//
+// Same logic as a ranges chain: fold_left (C++23) accumulates an
+// optional<U>; the binary op uses optional's monadic .and_then to gate
+// further work on prior success and .transform to combine the matched
+// value, so fail-closed falls out of the monad rather than explicit
+// early returns. The outer .transform puts the final U back into E.
 template <typename E>
 constexpr std::optional<E> from_flags_string(std::string_view s) {
     using U = std::underlying_type_t<E>;
