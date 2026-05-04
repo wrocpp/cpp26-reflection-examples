@@ -1,15 +1,17 @@
-// Today (no P3081 profiles yet): a reflection-driven "basic safety
-// profile" verifier. Inspects a class's data members at compile time
-// and refuses to compile if any member violates the profile rules:
+// A reflection-driven "basic safety profile" verifier. Inspects a
+// class's data members at compile time and refuses to compile if any
+// member violates per-type rules:
 //   - No raw owning pointers (T*, T const*).
 //   - No C-style arrays (a bare T[N] member is unbounded at the
 //     interface level; std::array<T, N> is fine).
 //
-// This is the pattern P3081 (Sutter) and P3274 (Stroustrup) will
-// formalise as compiler-enforced subsets once they ship in clang-p2996
-// and GCC. Until then, reflection already gives us the introspection
-// primitives to enforce equivalent rules in user libraries today --
-// not at the language level, but at the static_assert level.
+// Why this matters in 2026: the [[profiles::enforce]] attribute (P3081
+// Sutter, P3589 Dos Reis framework, P3984 Stroustrup type-safety
+// profile) was DEFERRED from C++26 to C++29 at the Croydon meeting
+// (March 2026). For the per-class structural rules above, reflection
+// already gives us the primitives to enforce equivalent constraints
+// from a user library TODAY -- without waiting for the C++29 attribute,
+// without leaving stock clang or GCC.
 //
 // Aligned with C++ Core Guidelines I.11 (never transfer ownership by
 // raw pointer), F.7 / F.20 / F.43 (ownership rules), and the spirit of
@@ -20,7 +22,7 @@
 //     ghcr.io/wrocpp/cpp-reflection:2026-05 \
 //     bash -c "clang++ -std=c++26 -freflection-latest -stdlib=libc++ \
 //                      $0 -o /tmp/profile && /tmp/profile" \
-//     posts/toolset/safety-profiles-2026/examples/reflect-profile.cpp
+//     posts/toolset/memory-safety-cpp26-and-beyond/examples/reflect-profile.cpp
 
 #include <experimental/meta>
 #include <array>
