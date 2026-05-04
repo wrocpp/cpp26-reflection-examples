@@ -1,0 +1,34 @@
+// Cpp2 -- safety by default in cppfront. (P3081/P3589/P3984 are deferred to
+// C++29; cppfront prototypes the same design intent in a working compiler
+// today as a syntax-2 -> syntax-1 translator.)
+//
+// Safety checks ON BY DEFAULT (no flag needed):
+//   * subscript bounds checks
+//   * null dereference checks
+//   * mixed-sign comparison checks
+//   * integer divide-by-zero checks
+// Use -no-subscript-checks etc. to opt OUT for hot paths.
+//
+// Compile in cppfront (translates Cpp2 to Cpp1, then any C++ compiler
+// builds the resulting Cpp1 source):
+//
+//   git clone https://github.com/hsutter/cppfront.git
+//   cd cppfront && make
+//   ./cppfront cppfront-safety.cpp2          # produces cppfront-safety.cpp
+//   clang++ -std=c++23 cppfront-safety.cpp -o demo
+//   ./demo
+//
+// Or just open the godbolt link from the wro.cpp page:
+//   https://godbolt.org/z/c7T7dGcT6
+
+print: (msg: std::string_view, n: int) = {
+    std::cout << msg << ": " << n << "\n";
+}
+
+main: () -> int = {
+    items: std::vector<int> = (10, 20, 30);
+
+    print("items[1]", items[1]);     // OK
+    print("items[5]", items[5]);     // bounds_safety violation at runtime
+                                     // (default -- no flag needed to enable)
+}
