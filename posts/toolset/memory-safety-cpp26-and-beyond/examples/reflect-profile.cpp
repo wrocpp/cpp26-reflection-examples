@@ -15,7 +15,8 @@
 //
 // Aligned with C++ Core Guidelines I.11 (never transfer ownership by
 // raw pointer), F.7 / F.20 / F.43 (ownership rules), and the spirit of
-// MISRA C++ 2023 / AUTOSAR C++14 ban on raw pointer arithmetic.
+// the MISRA C++:2023 ban on raw pointer arithmetic (the unified
+// MISRA + AUTOSAR successor since the 2019 consortium merger).
 //
 // Compile + run via the wro.cpp container (recommended):
 //   docker run --rm -v "$PWD":/work -w /work \
