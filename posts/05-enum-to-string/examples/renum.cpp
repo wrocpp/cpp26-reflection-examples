@@ -6,6 +6,7 @@
 #include <experimental/meta>
 #include <optional>
 #include <print>
+#include <ranges>
 #include <string>
 #include <string_view>
 
@@ -45,23 +46,22 @@ constexpr std::string to_flags_string(E value) {
     return out.empty() ? "0" : out;
 }
 
-// Inverse of to_flags_string. Splits on '|' and OR-combines each
-// matched flag's underlying value. Returns nullopt if any token does
-// not name a declared enumerator -- protects against typos at the
-// trust boundary (config files, CLI args, network input).
+// Inverse of to_flags_string. Splits on '|' via std::views::split,
+// looks up each token via from_string, OR-combines the underlying
+// values. Returns nullopt if any token does not name a declared
+// enumerator -- protects against typos at the trust boundary (config
+// files, CLI args, network input). Empty input returns nullopt
+// rather than the implicit zero, matching the fail-closed convention.
 template <typename E>
 constexpr std::optional<E> from_flags_string(std::string_view s) {
     using U = std::underlying_type_t<E>;
     if (s.empty()) return std::nullopt;
     U combined{};
-    while (true) {
-        auto pipe = s.find('|');
-        auto token = s.substr(0, pipe);
+    for (auto part : std::views::split(s, '|')) {
+        std::string_view token(part.begin(), part.end());
         auto match = from_string<E>(token);
         if (!match) return std::nullopt;
         combined |= static_cast<U>(*match);
-        if (pipe == std::string_view::npos) break;
-        s = s.substr(pipe + 1);
     }
     return E{combined};
 }
