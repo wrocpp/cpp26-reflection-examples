@@ -27,6 +27,27 @@ struct property_info {
     std::function<void(void*, std::any const&)>    setter;
 };
 
+// Helpers as function templates -- variables introduced in a
+// `template for` body cannot be captured by a regular lambda (they
+// live in a special expansion context). Calling out to a templated
+// helper that takes the pointer-to-member as a non-type template
+// parameter sidesteps the capture rule.
+template <typename T, auto Pmd>
+auto make_getter() {
+    return [](void const* o) -> std::any {
+        return std::any{static_cast<T const*>(o)->*Pmd};
+    };
+}
+
+template <typename T, typename M, auto Pmd, bool ReadOnly>
+auto make_setter() {
+    return [](void* o, std::any const& v) {
+        if constexpr (!ReadOnly) {
+            static_cast<T*>(o)->*Pmd = std::any_cast<M>(v);
+        }
+    };
+}
+
 template <typename T>
 std::vector<property_info> properties_of() {
     std::vector<property_info> out;
@@ -37,18 +58,13 @@ std::vector<property_info> properties_of() {
         if constexpr (std::meta::annotation_of_type<property>(m).has_value()) {
             constexpr bool is_ro = std::meta::annotation_of_type<read_only>(m).has_value();
             using M = [:std::meta::type_of(m):];
+            constexpr auto pmd = &[:m:];
             out.push_back({
                 std::meta::identifier_of(m),
                 std::meta::display_string_of(std::meta::type_of(m)),
                 is_ro,
-                [](void const* o) -> std::any {
-                    return std::any{static_cast<T const*>(o)->[:m:]};
-                },
-                [](void* o, std::any const& v) {
-                    if constexpr (!is_ro) {
-                        static_cast<T*>(o)->[:m:] = std::any_cast<M>(v);
-                    }
-                },
+                make_getter<T, pmd>(),
+                make_setter<T, M, pmd, is_ro>(),
             });
         }
     }
