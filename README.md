@@ -81,6 +81,23 @@ which is what `./cpp` wraps.
 
 ---
 
+## News shorts (`posts/00-news/`)
+
+Alongside the numbered series, dated **news shorts** under [`posts/00-news/`](posts/00-news/)
+track what is happening in C++ right now, each with a runnable Compiler Explorer link.
+The series teaches reflection top-to-bottom; the news track is broader. As of June 2026 it
+spans **all three C++26 pillars and their neighbours**, not just reflection + safety:
+
+- **Reflection** (P2996): GCC 16.1 hands-on, "where it compiles", "what's next".
+- **Safety**: contracts (P2900), memory-safety profiles.
+- **`std::execution`** (P2300): [hello-sender](posts/00-news/2026-06-28-hello-sender/), [structured concurrency](posts/00-news/2026-06-30-structured-concurrency/).
+- **`#embed`**: [embed a file at compile time](posts/00-news/2026-07-02-embed-the-file/).
+- **C++29 quality-of-life**: runnable workarounds behind the [Brno papers](posts/00-news/2026-06-18-brno-quality-of-life/) (P2287, P3091, P3668).
+
+Shorts that need a Compiler Explorer library or extra file (e.g. `stdexec`, an `#embed`
+asset) carry a `// verify: ce-libs:` or `// verify: ce-file:` header marker; `verify.sh`
+skips those locally and they are gated on Compiler Explorer instead.
+
 ## How to follow
 
 - Star the repo; each published post ships as a tagged release (`post-01`, `post-02`, ...).
