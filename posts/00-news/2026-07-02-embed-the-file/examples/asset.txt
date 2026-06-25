@@ -1,0 +1,1 @@
+#embed pulls this file straight into the binary -- no xxd, no codegen.

@@ -36,6 +36,14 @@ for example in posts/*/examples/*.cpp posts/00-news/*/examples/*.cpp; do
         skip=$((skip + 1))
         continue
     fi
+    # Examples that need a Compiler Explorer library (ce-libs, e.g. stdexec) or
+    # an extra CE-supplied file (ce-file, e.g. an #embed asset) are not built in
+    # this container; they are compiled + run on Compiler Explorer instead.
+    if grep -qE '^//[[:space:]]*verify:[[:space:]]*ce-(libs|file|only)' "${example}"; then
+        printf "${YELLOW}SKIP${NC} (ce-only)\n"
+        skip=$((skip + 1))
+        continue
+    fi
     if ./cpp "${example}" -o "${bin}" >/dev/null 2>&1 && ./run "${bin}" >/dev/null 2>&1; then
         printf "${GREEN}PASS${NC}\n"
         pass=$((pass + 1))
