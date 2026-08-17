@@ -4,7 +4,19 @@ hello_reflection
 .claude/
 
 # Compiled example binaries — keep sources, ignore builds.
+# The allowlist has to name every source extension we actually use: anything
+# missing is ignored silently, with no warning and no entry in git status.
+# CUDA sources were lost this way until 2026-08-17.
 posts/*/examples/*
 !posts/*/examples/*.cpp
+!posts/*/examples/*.cc
+!posts/*/examples/*.cu
+!posts/*/examples/*.cuh
+!posts/*/examples/*.cpp2
+!posts/*/examples/*.h
+!posts/*/examples/*.hpp
 !posts/*/examples/*.md
 !posts/*/examples/*.yml
+!posts/*/examples/*.txt
+!posts/*/examples/CMakeLists.txt
+# Compiled binaries have no extension, so the base rule still catches them.
