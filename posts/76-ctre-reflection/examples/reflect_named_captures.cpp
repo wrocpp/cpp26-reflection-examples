@@ -14,11 +14,12 @@
 // values, so the positional form is the one that composes cleanly today.
 //
 // Compile: clang-p2996 fork, -std=c++26 -freflection-latest -stdlib=libc++
-// verify: clang-only
+// verify: gcc-and-clang
+// verify: gcc-options: -std=c++26 -freflection -O1
 // verify: clang-options: -std=c++26 -freflection-latest -stdlib=libc++ -O1
 
 #include <ctre.hpp>
-#include <experimental/meta>
+#include <meta>
 
 #include <cstdio>
 #include <optional>

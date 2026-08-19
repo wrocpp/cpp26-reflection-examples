@@ -16,10 +16,11 @@
 // member count is (functions - 1).
 //
 // Compile: clang-p2996, -std=c++26 -freflection-latest -stdlib=libc++
-// verify: clang-only
+// verify: gcc-and-clang
+// verify: gcc-options: -std=c++26 -freflection -O1
 // verify: clang-options: -std=c++26 -freflection-latest -stdlib=libc++ -O1
 
-#include <experimental/meta>
+#include <meta>
 #include <cstdio>
 
 template <typename T>
