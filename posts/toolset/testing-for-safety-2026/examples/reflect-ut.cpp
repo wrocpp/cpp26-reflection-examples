@@ -56,9 +56,12 @@ using namespace boost::ut;
 // --- the reusable utility, ~20 lines ---
 
 // Per-field test body, parameterised on a pointer-to-data-member NTTP.
-// Hoisted into a function template because variables introduced by
-// `template for` cannot be captured by a regular lambda. The user
-// supplies this; the utility wires it into UT's runtime registration.
+// The body comes from a user-supplied template rather than a lambda
+// written inside the `template for` loop, so one factory serves every
+// struct. A lambda in the loop could splice `m` directly without
+// capturing it: `m` is constexpr and a splice is not an odr-use. An
+// explicit `[m]` capture is what fails on GCC. The user supplies this;
+// the utility wires it into UT's runtime registration.
 template <auto Pmd>
 using field_test_body_t = void (*)();
 
