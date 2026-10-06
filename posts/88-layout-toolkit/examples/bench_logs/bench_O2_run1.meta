@@ -1,0 +1,4 @@
+variant=O2 flags="-O2" run=1 label=NOISY(load>4 after 3 retries)
+before: load=34.17 busy_procs(>20%cpu)=3 total_procs=865 time=13:18:48
+rc=0
+after: load=27.28 busy_procs(>20%cpu)=6 total_procs=871 time=13:19:20

@@ -1,0 +1,4 @@
+variant=O2_novec flags="-O2 -fno-tree-vectorize" run=3 label=NOISY(load>4 after 3 retries)
+before: load=14.86 busy_procs(>20%cpu)=6 total_procs=898 time=13:29:00
+rc=0
+after: load=21.97 busy_procs(>20%cpu)=4 total_procs=910 time=13:29:31
