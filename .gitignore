@@ -18,5 +18,7 @@ posts/*/examples/*
 !posts/*/examples/*.md
 !posts/*/examples/*.yml
 !posts/*/examples/*.txt
+!posts/*/examples/*.sh
+!posts/*/examples/*.py
 !posts/*/examples/CMakeLists.txt
 # Compiled binaries have no extension, so the base rule still catches them.
