@@ -21,5 +21,7 @@ posts/*/examples/*
 !posts/*/examples/*.sh
 !posts/*/examples/*.py
 !posts/*/examples/*.csv
+# A results-<machine>/ directory holds raw run output (csv, txt, assembly).
+!posts/*/examples/results-*/
 !posts/*/examples/CMakeLists.txt
 # Compiled binaries have no extension, so the base rule still catches them.
