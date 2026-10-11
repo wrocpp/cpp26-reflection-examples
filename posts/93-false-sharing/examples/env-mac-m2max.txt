@@ -1,0 +1,25 @@
+date: 2026-10-11T00:39:27Z
+cpu: Apple M2 Max
+perflevel0 (logical): 8 Performance
+perflevel1 (logical): 4 Efficiency
+hw.cachelinesize: 128
+hw.l1dcachesize: 65536
+hw.l2cachesize: 4194304
+frequency: not controlled (no DVFS control on macOS)
+power:  lowpowermode 0;
+thermal: Note: No thermal warning level has been recorded;Note: No performance warning level has been recorded;Note: No CPU power status has been recorded;
+uptime before:  2:39  up 2 days,  6:34, 9 users, load averages: 4.68 8.97 7.58
+top processes by cpu before:
+ %CPU COMM
+ 97.0 /System/Library/PrivateFrameworks/CoreSuggestions.framework/Versions/A/Support/suggestd
+ 24.6 /usr/local/bin/netbird
+ 17.3 claude bg-spare
+  9.9 claude bg-spare
+  5.5 /Applications/iTerm 2.app/Contents/MacOS/iTerm2
+compiler: g++-16 (Homebrew GCC 16.2.0) 16.2.0
+flags: -std=c++23 -O2 -pthread
+# layout: sizeof(packed atomic slot)=8 sizeof(hdis slot)=256 sizeof(128 slot)=128 sizeof(64 slot)=64
+# hardware_destructive_interference_size=256 hardware_constructive_interference_size=64
+# hardware_concurrency=12
+# done: 0 checksum failures
+uptime after:  2:43  up 2 days,  6:38, 9 users, load averages: 28.26 22.37 13.90

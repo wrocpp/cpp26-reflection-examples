@@ -1,0 +1,6 @@
+== macOS, g++-16 (Homebrew GCC 16.2.0) 16.2.0
+live threads=8 min address gap=16 bytes, pairs in one 64-byte block=2, in one 128-byte block=3
+== macOS, Apple clang version 21.0.0 (clang-2100.3.34.2)
+live threads=8 min address gap=16 bytes, pairs in one 64-byte block=2, in one 128-byte block=4
+== Linux aarch64 (Docker VM), gcc:16.2
+live threads=8 min address gap=8454144 bytes, pairs in one 64-byte block=0, in one 128-byte block=0
