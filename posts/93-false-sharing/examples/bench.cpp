@@ -2,6 +2,9 @@
 // False-sharing write benchmark. T threads each increment a counter N times.
 // Variants differ only in where the counters live. Raw per-run rows go to CSV.
 // Build: see run.sh. Needs C++20 (<new> interference sizes, <bit>), no libraries.
+// Options: --threads 1,2,4 --runs R --n N --out FILE --pin; --no-warmup skips the discarded round 0
+// and --run-base K numbers the first reported run K (the x86-64 driver calls it once per
+// repetition, see bench-run-x86.sh). Defaults, kernels and the CSV schema are unchanged.
 #include <algorithm>
 #include <array>
 #include <atomic>
@@ -84,6 +87,8 @@ struct Options {
   int runs = 11;
   std::uint64_t n = 10'000'000;
   bool pin = false;
+  bool warmup = true;   // --no-warmup skips the discarded round 0
+  int run_base = 1;     // --run-base K numbers the first reported run K
   std::string out = "results.csv";
 };
 
@@ -252,6 +257,8 @@ int main(int argc, char** argv) {
     else if (!std::strcmp(argv[i], "--n") && i + 1 < argc) o.n = std::strtoull(argv[++i], nullptr, 10);
     else if (!std::strcmp(argv[i], "--out") && i + 1 < argc) o.out = argv[++i];
     else if (!std::strcmp(argv[i], "--pin")) o.pin = true;
+    else if (!std::strcmp(argv[i], "--no-warmup")) o.warmup = false;
+    else if (!std::strcmp(argv[i], "--run-base") && i + 1 < argc) o.run_base = std::atoi(argv[++i]);
     else { std::fprintf(stderr, "unknown argument %s\n", argv[i]); return 2; }
   }
   for (int t : o.threads) if (t < 1 || t > static_cast<int>(kMaxThreads)) { std::fprintf(stderr, "bad thread count\n"); return 2; }
@@ -262,14 +269,14 @@ int main(int argc, char** argv) {
   const auto variants = make_variants();
   int bad = 0;
   // run 0 is a discarded warm-up round; runs interleave all variants so drift hits each equally
-  for (int r = 0; r <= o.runs; ++r)
+  for (int r = o.warmup ? 0 : 1; r <= o.runs; ++r)
     for (int T : o.threads)
       for (const auto& v : variants) {
         const Result res = v.run(T, o.n, o.pin);
         const bool ok = res.checksum == static_cast<std::uint64_t>(T) * o.n;
         if (!ok) { ++bad; std::fprintf(stderr, "CHECKSUM MISMATCH %s/%s T=%d\n", v.flavour, v.name, T); }
         if (r == 0) continue;
-        std::fprintf(f, "%s,%s,%d,%d,%llu,%.0f,%.4f,%d\n", v.flavour, v.name, T, r,
+        std::fprintf(f, "%s,%s,%d,%d,%llu,%.0f,%.4f,%d\n", v.flavour, v.name, T, r + o.run_base - 1,
                      static_cast<unsigned long long>(o.n), res.ns, res.ns / static_cast<double>(o.n), ok ? 1 : 0);
       }
   std::fclose(f);
