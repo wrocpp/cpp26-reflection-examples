@@ -1,0 +1,12 @@
+config,rep,loadavg1_before,loadavg1_after,running_before,running_after,own_threads,noisy
+first4,1,1.37,1.37,2,5,4,0
+first4,2,1.37,1.42,3,2,4,0
+first4,3,1.42,1.42,3,3,4,0
+first4,4,1.42,1.55,3,2,4,0
+first4,5,1.55,1.75,2,3,4,0
+first4,6,1.75,1.75,3,2,4,0
+first4,7,1.75,2.01,2,3,4,0
+first4,8,2.01,2.01,3,3,4,0
+first4,9,2.01,2.09,3,3,4,0
+first4,10,2.09,2.16,3,3,4,0
+first4,11,2.16,2.16,1,2,4,0

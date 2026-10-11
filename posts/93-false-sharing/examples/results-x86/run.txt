@@ -1,0 +1,109 @@
+
+== bench/run.sh
+BENCH_CPUS mask: 0-7 (8 CPUs); affinity of this shell: pid 655's current affinity list: 0-7
+thread_siblings_list is already in host-info.txt; read again here only to choose percore4
+
+== build
+g++ (GCC) 16.2.0
+flags: -std=c++23 -O2 -pthread
+lock-prefixed adds in generated code: 6; ldadd: 0
+planned repetitions=11 n=10000000 min_quiet=7 max_reps=25 noise_rule='loadavg1_after > own_threads + 1'
+
+== config first4: taskset -c 0,1,2,3, threads 1,2,4
+loadavg at start: 1.06 4.08 6.69 4/616 708
+  first4 rep 1: loadavg1 1.37 -> 1.37, running 2 -> 5, own threads 4, noisy=0
+  first4 rep 2: loadavg1 1.37 -> 1.42, running 3 -> 2, own threads 4, noisy=0
+  first4 rep 3: loadavg1 1.42 -> 1.42, running 3 -> 3, own threads 4, noisy=0
+  first4 rep 4: loadavg1 1.42 -> 1.55, running 3 -> 2, own threads 4, noisy=0
+  first4 rep 5: loadavg1 1.55 -> 1.75, running 2 -> 3, own threads 4, noisy=0
+  first4 rep 6: loadavg1 1.75 -> 1.75, running 3 -> 2, own threads 4, noisy=0
+  first4 rep 7: loadavg1 1.75 -> 2.01, running 2 -> 3, own threads 4, noisy=0
+  first4 rep 8: loadavg1 2.01 -> 2.01, running 3 -> 3, own threads 4, noisy=0
+  first4 rep 9: loadavg1 2.01 -> 2.09, running 3 -> 3, own threads 4, noisy=0
+  first4 rep 10: loadavg1 2.09 -> 2.16, running 3 -> 3, own threads 4, noisy=0
+  first4 rep 11: loadavg1 2.16 -> 2.16, running 1 -> 2, own threads 4, noisy=0
+CONFIG first4: 11 repetitions, 0 marked noisy, 11 remain (noisy repetitions: none)
+loadavg at end: 2.16 4.02 6.58 1/578 2033
+
+== config all: taskset -c 0,1,2,3,4,5,6,7, threads 1,2,4,8
+loadavg at start: 2.16 4.02 6.58 1/578 2046
+  all rep 1: loadavg1 2.85 -> 3.26, running 2 -> 3, own threads 8, noisy=0
+  all rep 2: loadavg1 3.26 -> 3.72, running 3 -> 3, own threads 8, noisy=0
+  all rep 3: loadavg1 3.72 -> 4.65, running 3 -> 3, own threads 8, noisy=0
+  all rep 4: loadavg1 4.65 -> 5.16, running 3 -> 3, own threads 8, noisy=0
+  all rep 5: loadavg1 5.16 -> 5.38, running 4 -> 2, own threads 8, noisy=0
+  all rep 6: loadavg1 5.38 -> 5.72, running 3 -> 2, own threads 8, noisy=0
+  all rep 7: loadavg1 5.72 -> 6.07, running 2 -> 3, own threads 8, noisy=0
+  all rep 8: loadavg1 6.07 -> 6.30, running 3 -> 2, own threads 8, noisy=0
+  all rep 9: loadavg1 6.30 -> 6.34, running 2 -> 3, own threads 8, noisy=0
+  all rep 10: loadavg1 6.34 -> 6.56, running 3 -> 3, own threads 8, noisy=0
+  all rep 11: loadavg1 6.56 -> 6.67, running 3 -> 4, own threads 8, noisy=0
+CONFIG all: 11 repetitions, 0 marked noisy, 11 remain (noisy repetitions: none)
+loadavg at end: 6.67 5.02 6.72 3/609 4619
+
+== config percore4: taskset -c 0,1,2,3, threads 4
+loadavg at start: 6.67 5.02 6.72 2/609 4668
+  percore4 rep 1: loadavg1 6.67 -> 6.62, running 3 -> 2, own threads 4, noisy=1
+  percore4 rep 2: loadavg1 6.62 -> 6.62, running 3 -> 3, own threads 4, noisy=1
+  percore4 rep 3: loadavg1 6.62 -> 6.41, running 3 -> 4, own threads 4, noisy=1
+  percore4 rep 4: loadavg1 6.41 -> 6.41, running 3 -> 3, own threads 4, noisy=1
+  percore4 rep 5: loadavg1 6.41 -> 6.41, running 3 -> 3, own threads 4, noisy=1
+  percore4 rep 6: loadavg1 6.41 -> 6.21, running 3 -> 3, own threads 4, noisy=1
+  percore4 rep 7: loadavg1 6.21 -> 6.21, running 3 -> 3, own threads 4, noisy=1
+  percore4 rep 8: loadavg1 6.21 -> 6.21, running 3 -> 2, own threads 4, noisy=1
+  percore4 rep 9: loadavg1 6.21 -> 6.12, running 2 -> 3, own threads 4, noisy=1
+  percore4 rep 10: loadavg1 6.12 -> 6.12, running 3 -> 3, own threads 4, noisy=1
+  percore4 rep 11: loadavg1 6.12 -> 6.12, running 3 -> 3, own threads 4, noisy=1
+  only 0 quiet repetitions of 11: extending
+  percore4 rep 12: loadavg1 6.12 -> 5.87, running 3 -> 2, own threads 4, noisy=1
+  only 0 quiet repetitions of 12: extending
+  percore4 rep 13: loadavg1 5.87 -> 5.87, running 3 -> 2, own threads 4, noisy=1
+  only 0 quiet repetitions of 13: extending
+  percore4 rep 14: loadavg1 5.87 -> 6.04, running 2 -> 2, own threads 4, noisy=1
+  only 0 quiet repetitions of 14: extending
+  percore4 rep 15: loadavg1 6.04 -> 6.04, running 2 -> 3, own threads 4, noisy=1
+  only 0 quiet repetitions of 15: extending
+  percore4 rep 16: loadavg1 6.04 -> 6.04, running 3 -> 2, own threads 4, noisy=1
+  only 0 quiet repetitions of 16: extending
+  percore4 rep 17: loadavg1 6.04 -> 5.87, running 3 -> 2, own threads 4, noisy=1
+  only 0 quiet repetitions of 17: extending
+  percore4 rep 18: loadavg1 5.87 -> 5.87, running 3 -> 3, own threads 4, noisy=1
+  only 0 quiet repetitions of 18: extending
+  percore4 rep 19: loadavg1 5.87 -> 5.87, running 4 -> 2, own threads 4, noisy=1
+  only 0 quiet repetitions of 19: extending
+  percore4 rep 20: loadavg1 5.87 -> 5.72, running 2 -> 3, own threads 4, noisy=1
+  only 0 quiet repetitions of 20: extending
+  percore4 rep 21: loadavg1 5.72 -> 5.72, running 3 -> 3, own threads 4, noisy=1
+  only 0 quiet repetitions of 21: extending
+  percore4 rep 22: loadavg1 5.72 -> 5.72, running 3 -> 3, own threads 4, noisy=1
+  only 0 quiet repetitions of 22: extending
+  percore4 rep 23: loadavg1 5.72 -> 5.59, running 3 -> 3, own threads 4, noisy=1
+  only 0 quiet repetitions of 23: extending
+  percore4 rep 24: loadavg1 5.59 -> 5.59, running 2 -> 2, own threads 4, noisy=1
+  only 0 quiet repetitions of 24: extending
+  percore4 rep 25: loadavg1 5.59 -> 5.59, running 1 -> 2, own threads 4, noisy=1
+CONFIG percore4: 25 repetitions, 25 marked noisy, 0 remain (noisy repetitions: 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25)
+INSUFFICIENT_QUIET_REPS percore4
+loadavg at end: 5.59 4.97 6.62 1/578 6577
+
+== summary
+elapsed: 166 s
+total 372
+-rwxr-xr-x 1 root root  46512 Oct 11 15:09 bench-x86
+-rw-r--r-- 1 root root 142035 Oct 11 15:09 bench-x86.s
+-rw-r--r-- 1 root root   1172 Oct 11 14:49 host-info.txt
+-rw-r--r-- 1 root root    355 Oct 11 15:11 noise-all.csv
+-rw-r--r-- 1 root root    388 Oct 11 15:10 noise-first4.csv
+-rw-r--r-- 1 root root    830 Oct 11 15:12 noise-percore4.csv
+-rw-r--r-- 1 root root   8428 Oct 11 15:09 quiet.txt
+-rw-r--r-- 1 root root  28120 Oct 11 15:11 results-all.csv
+-rw-r--r-- 1 root root  28120 Oct 11 15:11 results-all.filtered.csv
+-rw-r--r-- 1 root root  21001 Oct 11 15:10 results-first4.csv
+-rw-r--r-- 1 root root  21001 Oct 11 15:10 results-first4.filtered.csv
+-rw-r--r-- 1 root root  16111 Oct 11 15:12 results-percore4.csv
+-rw-r--r-- 1 root root     78 Oct 11 15:12 results-percore4.filtered.csv
+-rw-r--r-- 1 root root   5520 Oct 11 15:12 run.txt
+-rw-r--r-- 1 root root   2880 Oct 11 15:11 stdout-all.txt
+-rw-r--r-- 1 root root   2880 Oct 11 15:10 stdout-first4.txt
+-rw-r--r-- 1 root root   6240 Oct 11 15:12 stdout-percore4.txt
+RESULT: all checksums passed
