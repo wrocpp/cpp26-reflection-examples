@@ -1,0 +1,48 @@
+# layout: sizeof(packed atomic slot)=8 sizeof(hdis slot)=64 sizeof(128 slot)=128 sizeof(64 slot)=64
+# hardware_destructive_interference_size=64 hardware_constructive_interference_size=64
+# hardware_concurrency=8
+# done: 0 checksum failures
+# layout: sizeof(packed atomic slot)=8 sizeof(hdis slot)=64 sizeof(128 slot)=128 sizeof(64 slot)=64
+# hardware_destructive_interference_size=64 hardware_constructive_interference_size=64
+# hardware_concurrency=8
+# done: 0 checksum failures
+# layout: sizeof(packed atomic slot)=8 sizeof(hdis slot)=64 sizeof(128 slot)=128 sizeof(64 slot)=64
+# hardware_destructive_interference_size=64 hardware_constructive_interference_size=64
+# hardware_concurrency=8
+# done: 0 checksum failures
+# layout: sizeof(packed atomic slot)=8 sizeof(hdis slot)=64 sizeof(128 slot)=128 sizeof(64 slot)=64
+# hardware_destructive_interference_size=64 hardware_constructive_interference_size=64
+# hardware_concurrency=8
+# done: 0 checksum failures
+# layout: sizeof(packed atomic slot)=8 sizeof(hdis slot)=64 sizeof(128 slot)=128 sizeof(64 slot)=64
+# hardware_destructive_interference_size=64 hardware_constructive_interference_size=64
+# hardware_concurrency=8
+# done: 0 checksum failures
+# layout: sizeof(packed atomic slot)=8 sizeof(hdis slot)=64 sizeof(128 slot)=128 sizeof(64 slot)=64
+# hardware_destructive_interference_size=64 hardware_constructive_interference_size=64
+# hardware_concurrency=8
+# done: 0 checksum failures
+# layout: sizeof(packed atomic slot)=8 sizeof(hdis slot)=64 sizeof(128 slot)=128 sizeof(64 slot)=64
+# hardware_destructive_interference_size=64 hardware_constructive_interference_size=64
+# hardware_concurrency=8
+# done: 0 checksum failures
+# layout: sizeof(packed atomic slot)=8 sizeof(hdis slot)=64 sizeof(128 slot)=128 sizeof(64 slot)=64
+# hardware_destructive_interference_size=64 hardware_constructive_interference_size=64
+# hardware_concurrency=8
+# done: 0 checksum failures
+# layout: sizeof(packed atomic slot)=8 sizeof(hdis slot)=64 sizeof(128 slot)=128 sizeof(64 slot)=64
+# hardware_destructive_interference_size=64 hardware_constructive_interference_size=64
+# hardware_concurrency=8
+# done: 0 checksum failures
+# layout: sizeof(packed atomic slot)=8 sizeof(hdis slot)=64 sizeof(128 slot)=128 sizeof(64 slot)=64
+# hardware_destructive_interference_size=64 hardware_constructive_interference_size=64
+# hardware_concurrency=8
+# done: 0 checksum failures
+# layout: sizeof(packed atomic slot)=8 sizeof(hdis slot)=64 sizeof(128 slot)=128 sizeof(64 slot)=64
+# hardware_destructive_interference_size=64 hardware_constructive_interference_size=64
+# hardware_concurrency=8
+# done: 0 checksum failures
+# layout: sizeof(packed atomic slot)=8 sizeof(hdis slot)=64 sizeof(128 slot)=128 sizeof(64 slot)=64
+# hardware_destructive_interference_size=64 hardware_constructive_interference_size=64
+# hardware_concurrency=8
+# done: 0 checksum failures

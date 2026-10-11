@@ -1,0 +1,35 @@
+date_utc: 2026-10-11T14:49:52Z
+runner: a CI runner on a shared laptop (amd64 docker); name and id removed
+image: gcc@sha256:3f73339bf0d3d64081cac3f6d9fdafc6dd4cef2b9c49e0a09f91e97cb0eb139a
+kernel: 6.12.107+deb13-amd64
+arch: x86_64
+nproc: 8
+--- lscpu ---
+CPU(s):                                  8
+Model name:                              Intel(R) Core(TM) i7-10510U CPU @ 1.80GHz
+Thread(s) per core:                      2
+Core(s) per socket:                      4
+CPU(s) scaling MHz:                      59%
+Flags: (avx2: 8 cpus)
+L1d cache:                               128 KiB (4 instances)
+L2 cache:                                1 MiB (4 instances)
+L3 cache:                                8 MiB (1 instance)
+--- frequency policy ---
+smt: on
+scaling_driver: intel_pstate
+scaling_governor: powersave
+intel_pstate no_turbo: 0
+--- topology (which CPUs share a core) ---
+cpu0: siblings 0,4
+cpu1: siblings 1,5
+cpu2: siblings 2,6
+cpu3: siblings 3,7
+cpu4: siblings 0,4
+cpu5: siblings 1,5
+cpu6: siblings 2,6
+cpu7: siblings 3,7
+--- container limits ---
+cpu.max: max 100000
+cpuset.cpus.effective: 0-7
+--- load at start ---
+loadavg: 18.70 12.95 10.13 19/1425 58

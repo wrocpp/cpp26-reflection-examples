@@ -1,0 +1,26 @@
+host (macOS) uptime before:  2:48  up 2 days,  6:44, 9 users, load averages: 3.55 10.92 11.26
+host cpu: Apple M2 Max
+host top processes by cpu before:
+ %CPU COMM
+ 96.3 /System/Library/PrivateFrameworks/CoreSuggestions.framework/Versions/A/Support/suggestd
+ 17.4 /usr/local/bin/netbird
+ 14.6 /System/Library/Frameworks/Virtualization.framework/Versions/A/XPCServices/com.apple.Virtualization.VirtualMachine.xpc/Contents/MacOS/com.apple.Virtualization.VirtualMachine
+  8.6 claude bg-spare
+  8.3 /System/Library/PrivateFrameworks/ApplePushService.framework/apsd
+date: 2026-10-11T00:48:48Z
+image: gcc:16.2 (aarch64, kernel 6.8.0-117-generic)
+CPU(s):                                  8
+Vendor ID:                               Apple
+Model name:                              -
+Thread(s) per core:                      1
+Flags:                                   fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp asimdhp cpuid asimdrdm 
+frequency: not controlled (virtual CPUs inside a VM)
+uptime before:  00:48:48 up 2 days,  3:08,  0 users,  load average: 0.07, 0.71, 0.49
+compiler: g++ (GCC) 16.2.0
+flags: -std=c++23 -O2 -pthread
+atomic add in the generated code:       2 ldadd4_acq_rel       4 ldadd8_relax 
+# layout: sizeof(packed atomic slot)=8 sizeof(hdis slot)=256 sizeof(128 slot)=128 sizeof(64 slot)=64
+# hardware_destructive_interference_size=256 hardware_constructive_interference_size=64
+# hardware_concurrency=8
+# done: 0 checksum failures
+uptime after:  00:50:06 up 2 days,  3:09,  0 users,  load average: 4.66, 2.05, 0.98
