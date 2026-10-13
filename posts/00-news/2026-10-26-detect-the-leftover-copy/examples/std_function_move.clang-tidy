@@ -1,0 +1,25 @@
+# Run: clang-tidy --experimental-custom-checks --config-file=std_function_move.clang-tidy chain.cpp -- -std=c++20
+# Needs clang-tidy 22 or later. Reports 3 sites in chain.cpp: the two naive layers and the by-value call.
+Checks: '-*,custom-wrocpp-std-function-move-leaves-copy'
+CustomChecks:
+  - Name: wrocpp-std-function-move-leaves-copy
+    Query: |
+      match expr(anyOf(
+        cxxConstructExpr(
+          hasDeclaration(cxxConstructorDecl(isMoveConstructor())),
+          hasArgument(0, ignoringImplicit(callExpr(
+            callee(functionDecl(hasName("::std::move"))),
+            hasArgument(0, declRefExpr(hasType(hasUnqualifiedDesugaredType(
+              recordType(hasDeclaration(cxxRecordDecl(hasName("::std::function")))))))))))),
+        cxxOperatorCallExpr(
+          hasOverloadedOperatorName("="),
+          callee(cxxMethodDecl(isMoveAssignmentOperator())),
+          hasArgument(1, ignoringImplicit(callExpr(
+            callee(functionDecl(hasName("::std::move"))),
+            hasArgument(0, declRefExpr(hasType(hasUnqualifiedDesugaredType(
+              recordType(hasDeclaration(cxxRecordDecl(hasName("::std::function"))))))))))))
+      ), unless(isExpansionInSystemHeader())).bind("move")
+    Diagnostic:
+      - BindName: move
+        Message: "moving a std::function can leave a copy of the callable in the source (libc++ keeps small callables); empty it with std::exchange(f, nullptr) or take it by rvalue reference"
+        Level: Warning
