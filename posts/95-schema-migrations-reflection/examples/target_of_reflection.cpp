@@ -85,4 +85,19 @@ int main() {
   m2.apply(db);
   std::printf("migrations: v%u then v%u, target read by one reflection query, step checked by a concept\n",
               m1.version, m2.version);
+
+  // Flip this to 1 to see what a rejected step looks like. The concept fails the
+  // deduction guide at the call site, so GCC names the lambda, not something deep
+  // inside Migration. Exact messages from GCC 16.2.0:
+#if 0
+  Migration g{1u, [](auto&) {}};            // generic lambda: operator() is a template
+  // error: class template argument deduction failed:
+  // error: no matching function for call to 'Migration(unsigned int, <lambda(auto:N&)>)'
+  //          constraints not satisfied
+
+  Migration c{1u, [](const Database&) {}};  // const ref: the step cannot mutate the database
+  // error: class template argument deduction failed:
+  // error: no matching function for call to 'Migration(unsigned int, <lambda(const Database&)>)'
+  //          constraints not satisfied
+#endif
 }
