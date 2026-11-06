@@ -18,13 +18,13 @@
 // profiles user-library demo (see memory-safety-cpp26-and-beyond), but
 // scoped to "fields the hardened stdlib will actually protect".
 //
-// Compile + run via the wro.cpp container:
-//   docker run --rm -v "$PWD":/work -w /work \
-//     ghcr.io/wrocpp/cpp-reflection:2026-05 \
-//     bash -c "clang++ -std=c++26 -freflection-latest -stdlib=libc++ \
-//                      -D_LIBCPP_HARDENING_MODE=_LIBCPP_HARDENING_MODE_FAST \
-//                      $0 -o /tmp/h && /tmp/h" \
-//     posts/toolset/hardened-stdlib/examples/reflect-hardened-fields.cpp
+// Compile and run (checked on Compiler Explorer on 2026-11-06, exit 0):
+//   g162 (GCC 16.2) and gsnapshot (GCC trunk):
+//     g++ -std=c++26 -freflection reflect-hardened-fields.cpp
+//   clang_bb_p2996 (the P2996 fork):
+//     clang++ -std=c++26 -freflection-latest -stdlib=libc++ \
+//       -D_LIBCPP_HARDENING_MODE=_LIBCPP_HARDENING_MODE_FAST \
+//       reflect-hardened-fields.cpp
 
 #if __has_include(<meta>)
 #include <meta>
