@@ -30,7 +30,11 @@
 //                      $0 -o /tmp/h && /tmp/h" \
 //     posts/toolset/lifetime-safety-2026/examples/reflect-borrow-annotations.cpp
 
-#include <experimental/meta>
+#if __has_include(<meta>)
+#include <meta>
+#else
+#include <experimental/meta>   // clang-p2996 fork
+#endif
 #include <print>
 #include <span>
 #include <string>
@@ -65,7 +69,7 @@ constexpr bool needs_borrow_annotation = is_view_type<T> || is_span_type<T>;
 template <typename Tag>
 consteval bool has_annotation(std::meta::info r) {
     for (auto a : std::meta::annotations_of(r))
-        if (std::meta::type_of(a) == ^^Tag) return true;
+        if (std::meta::remove_const(std::meta::type_of(a)) == ^^Tag) return true;
     return false;
 }
 
