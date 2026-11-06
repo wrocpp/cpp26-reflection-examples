@@ -26,7 +26,11 @@
 //                      $0 -o /tmp/h && /tmp/h" \
 //     posts/toolset/hardened-stdlib/examples/reflect-hardened-fields.cpp
 
-#include <experimental/meta>
+#if __has_include(<meta>)
+#include <meta>
+#else
+#include <experimental/meta>   // clang-p2996 fork
+#endif
 #include <array>
 #include <cstdint>
 #include <print>
