@@ -23,14 +23,18 @@
 // MISRA Rule 11.0.1 lint (members must be private) -- same walker,
 // orthogonal rules.
 //
-// Compile + run via the wro.cpp container:
-//   docker run --rm -v "$PWD":/work -w /work \
-//     ghcr.io/wrocpp/cpp-reflection:2026-05 \
-//     bash -c "clang++ -std=c++26 -freflection-latest -stdlib=libc++ \
-//                      $0 -o /tmp/h && /tmp/h" \
-//     posts/toolset/lifetime-safety-2026/examples/reflect-borrow-annotations.cpp
+// Compile and run (checked on Compiler Explorer on 2026-11-06, exit 0):
+//   g162 (GCC 16.2) and gsnapshot (GCC trunk):
+//     g++ -std=c++26 -freflection reflect-borrow-annotations.cpp
+//   clang_bb_p2996 (the P2996 fork):
+//     clang++ -std=c++26 -freflection-latest -stdlib=libc++ \
+//       reflect-borrow-annotations.cpp
 
-#include <experimental/meta>
+#if __has_include(<meta>)
+#include <meta>
+#else
+#include <experimental/meta>   // clang-p2996 fork
+#endif
 #include <print>
 #include <span>
 #include <string>
@@ -65,7 +69,7 @@ constexpr bool needs_borrow_annotation = is_view_type<T> || is_span_type<T>;
 template <typename Tag>
 consteval bool has_annotation(std::meta::info r) {
     for (auto a : std::meta::annotations_of(r))
-        if (std::meta::type_of(a) == ^^Tag) return true;
+        if (std::meta::remove_const(std::meta::type_of(a)) == ^^Tag) return true;
     return false;
 }
 
