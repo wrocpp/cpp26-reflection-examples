@@ -5,18 +5,24 @@
 // forget and no type name to repeat.
 // Build: g++ -std=c++26 -freflection -O1   (Compiler Explorer: g162)
 // Limits, shown at the end of main: the set is the classes of one namespace that are complete where clone() is
-// instantiated. A class in another namespace is not in it, and its clone is empty. The program has no macros and exits 0.
+// instantiated. A class in another namespace is not in it, and cloning it throws clone_unavailable. The program has no macros and exits 0.
 #include <meta>
 
 #include <cstdio>
 #include <memory>
 #include <numbers>
+#include <stdexcept>
+#include <string>
 #include <type_traits>
 #include <typeinfo>
 #include <utility>
 #include <vector>
 
 namespace shapes {
+
+struct clone_unavailable : std::logic_error {  // thrown when no searched class matches the dynamic type
+  using std::logic_error::logic_error;
+};
 
 struct AutoCloneable {  // a mixin with no template parameters and no hooks
   virtual ~AutoCloneable() = default;
@@ -41,6 +47,10 @@ struct AutoCloneable {  // a mixin with no template parameters and no hooks
           }
         }
       }
+    }
+    if (!out) {
+      const AutoCloneable& source = self;
+      throw clone_unavailable{std::string{"no searched class has the dynamic type "} + typeid(source).name()};
     }
     return out;
   }
@@ -105,5 +115,10 @@ int main() {
 
   elsewhere::Stray stray;
   shapes::Figure& stray_base = stray;
-  std::printf("clone of a class outside the namespace is empty: %d\n", stray_base.clone() == nullptr ? 1 : 0);
+  try {
+    auto lost = stray_base.clone();
+    std::printf("clone of a class outside the namespace returned %s\n", lost ? "an object" : "nothing");
+  } catch (const shapes::clone_unavailable& e) {
+    std::printf("clone of a class outside the namespace throws clone_unavailable: %s\n", e.what());
+  }
 }
