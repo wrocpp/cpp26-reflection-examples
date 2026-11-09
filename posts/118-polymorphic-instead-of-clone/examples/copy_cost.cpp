@@ -14,6 +14,8 @@
 #include <memory>
 #include <new>
 #include <numbers>
+#include <stdexcept>
+#include <string>
 #include <type_traits>
 #include <typeinfo>
 #include <utility>
@@ -92,6 +94,10 @@ struct Tile : Square {
 
 namespace hookless {  // designs 2 to 4: classes that write no clone code at all
 
+struct clone_unavailable : std::logic_error {  // thrown when no searched class matches the dynamic type
+  using std::logic_error::logic_error;
+};
+
 struct AutoCloneable {  // a mixin with no template parameters and no hooks
   virtual ~AutoCloneable() = default;
 
@@ -115,6 +121,10 @@ struct AutoCloneable {  // a mixin with no template parameters and no hooks
           }
         }
       }
+    }
+    if (!out) {
+      const AutoCloneable& source = self;
+      throw clone_unavailable{std::string{"no searched class has the dynamic type "} + typeid(source).name()};
     }
     return out;
   }
