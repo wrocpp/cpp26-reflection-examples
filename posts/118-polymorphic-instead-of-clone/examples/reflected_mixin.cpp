@@ -34,11 +34,12 @@ struct AutoCloneable {  // a mixin with no template parameters and no hooks
         std::meta::members_of(std::meta::parent_of(std::meta::dealias(^^T)), std::meta::access_context::unchecked()));
     std::unique_ptr<T> out;
     template for (constexpr auto member : members) {
-      if constexpr (std::meta::is_type(member) && std::meta::is_class_type(member) &&
+      if constexpr (std::meta::is_type(member) && std::meta::dealias(member) == member &&
+                    std::meta::is_class_type(member) && std::meta::is_complete_type(member) &&
                     std::meta::is_base_of_type(^^AutoCloneable, member) && !std::meta::is_abstract_type(member)) {
         using C = typename [:member:];
         if constexpr (std::is_base_of_v<T, C>) {
-          if (typeid(self) == typeid(C)) {
+          if (!out && typeid(self) == typeid(C)) {  // the first match only
             if constexpr (std::is_lvalue_reference_v<Self> || std::is_const_v<std::remove_reference_t<Self>>) {
               out = std::make_unique<C>(static_cast<const C&>(self));
             } else {
@@ -86,6 +87,9 @@ struct Tile : Square {  // nothing to forget: no hooks exist
   int grout = kGrout;
 };
 
+using TileAlias = Tile;  // an alias is skipped, so an rvalue clone moves once
+struct Pending;          // a declared but incomplete class is skipped, so it cannot break the search
+
 }  // namespace shapes
 
 namespace elsewhere {
@@ -111,6 +115,7 @@ int main() {
   const shapes::Tile& third = *from_rvalue;
   std::printf("dynamic types kept: %d %d %d\n", typeid(first) == typeid(shapes::Tile) ? 1 : 0,
               typeid(second) == typeid(shapes::Tile) ? 1 : 0, typeid(third) == typeid(shapes::Tile) ? 1 : 0);
+  std::printf("history held by the new object: %zu\n", from_rvalue->history.size());
   std::printf("history left in the donor after clone of an rvalue: %zu\n", tile.history.size());
 
   elsewhere::Stray stray;

@@ -7,9 +7,9 @@ no macros.
 
 - `examples/polymorphic_instead_of_clone.cpp`: copies, size, the valueless state after a move, and the conversion that does not
   exist. Compiler Explorer (g162, `-std=c++26 -O1`): https://godbolt.org/z/vo61oq7sr
-- `examples/reflected_mixin.cpp`: the hookless mixin. Compiler Explorer (g162, `-std=c++26 -freflection -O1`): https://godbolt.org/z/Ybrjx5n3M
+- `examples/reflected_mixin.cpp`: the hookless mixin. Compiler Explorer (g162, `-std=c++26 -freflection -O1`): https://godbolt.org/z/5jW4GPKa3
 - `examples/copy_cost.cpp`: allocations and element size for four designs, counted by a replaced `operator new`.
-  Compiler Explorer (g162, `-std=c++26 -freflection -O1`): https://godbolt.org/z/vhcx9Tr5c
+  Compiler Explorer (g162, `-std=c++26 -freflection -O1`): https://godbolt.org/z/booTzjeh7
 
 All results were taken on Compiler Explorer on 2026-11-09. All three programs exit 0.
 
@@ -29,12 +29,15 @@ that holds a `Tile` in constant evaluation. Two more state facts as type traits:
 
 ```text
 dynamic types kept: 1 1 1
+history held by the new object: 1
 history left in the donor after clone of an rvalue: 0
 clone of a class outside the namespace throws clone_unavailable: no searched class has the dynamic type N9elsewhere5StrayE
 ```
 
 `tile.clone()` is a `std::unique_ptr<Tile>`, `through_base.clone()` a `std::unique_ptr<Figure>` that holds a `Tile`, and
-`std::move(tile).clone()` moves. The set of classes is those of one namespace that are complete where `clone()` is
+`std::move(tile).clone()` moves. The search skips aliases (`using TileAlias = Tile;` is in the namespace, and a match on both `Tile` and its alias would move from
+an rvalue twice), skips classes that are declared but incomplete (`struct Pending;`), and stops at the first match.
+The set of classes is those of one namespace that are complete where `clone()` is
 instantiated: `elsewhere::Stray`, derived from `shapes::Figure` in another namespace, makes `clone()` throw `clone_unavailable`,
 a `std::logic_error` whose message names the dynamic type. The failure is loud, where an empty pointer would be silent. Builds on g162 and
 clang_bb_p2996 with the same output.
