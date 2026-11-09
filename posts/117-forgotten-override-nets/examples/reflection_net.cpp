@@ -83,6 +83,9 @@ struct ForgetfulTile : Square {  // forgot both overrides
   int grout = kGrout;
 };
 
+using TileAlias = Tile;  // the sweep skips aliases, so Tile is listed once
+struct Pending;          // and skips classes that are declared but incomplete
+
 }  // namespace shapes
 
 constexpr auto kAccess = std::meta::access_context::unchecked();
@@ -100,8 +103,9 @@ consteval bool declares_override(std::meta::info cls, std::string_view hook) {
 consteval std::vector<std::meta::info> concrete_figures(std::meta::info ns, std::meta::info base) {
   std::vector<std::meta::info> found;
   for (auto member : std::meta::members_of(ns, kAccess)) {
-    if (std::meta::is_type(member) && std::meta::is_class_type(member) && member != base &&
-        std::meta::is_base_of_type(base, member) && !std::meta::is_abstract_type(member)) {
+    if (std::meta::is_type(member) && std::meta::dealias(member) == member && std::meta::is_class_type(member) &&
+        std::meta::is_complete_type(member) && member != base && std::meta::is_base_of_type(base, member) &&
+        !std::meta::is_abstract_type(member)) {
       found.push_back(member);
     }
   }

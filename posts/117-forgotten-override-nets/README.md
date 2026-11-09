@@ -12,7 +12,7 @@ exactly when the net catches the forgetful class and accepts the correct ones.
 - `examples/constexpr_net.cpp`: `static_assert`s over a constant-evaluated round trip, and a concept that probes whether
   cloning through the derived type is a constant expression. Compiler Explorer (g162, `-std=c++26 -O1`): https://godbolt.org/z/ef3d1YxK7
 - `examples/reflection_net.cpp`: reflection lists every concrete `Figure` in a namespace, reports the ones without overrides,
-  and runs a clone round trip on each. Compiler Explorer (g162, `-std=c++26 -freflection -O1`): https://godbolt.org/z/sGnT3E6os
+  and runs a clone round trip on each. Compiler Explorer (g162, `-std=c++26 -freflection -O1`): https://godbolt.org/z/ehdTer55x
 
 All results were taken on Compiler Explorer on 2026-11-09.
 
@@ -63,5 +63,8 @@ test: ForgetfulTile clone keeps its type: false
 
 The program returns the number of results that differ from what the lint predicts, so it exits 0. g162 and clang_bb_p2996
 (`-std=c++26 -freflection-latest -stdlib=libc++`) print the same lines.
+
+The sweep skips aliases (`using TileAlias = Tile;` would list `Tile` twice) and classes that are declared but incomplete
+(`struct Pending;`). Both are in the example.
 
 Limits: the lint sees one namespace of one translation unit, and a generated test needs a default constructor.
