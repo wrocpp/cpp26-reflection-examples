@@ -10,6 +10,7 @@ hello_reflection
 posts/*/examples/*
 !posts/*/examples/*.cpp
 !posts/*/examples/*.cc
+!posts/*/examples/*.c
 !posts/*/examples/*.cu
 !posts/*/examples/*.cuh
 !posts/*/examples/*.cpp2
